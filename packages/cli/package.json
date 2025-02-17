@@ -1,0 +1,24 @@
+{
+  "name": "@feavy/workspace",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "dependencies": {
+    "@kubernetes/client-node": "^1.0.0",
+    "@workspace/lib": "^0.0.1",
+    "yaml": "^2.7.0",
+    "zod": "^3.24.2",
+    "zod-validation-error": "^3.4.0"
+  }
+}

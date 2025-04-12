@@ -117,18 +117,18 @@ export default class KubernetesWorkspace {
         }));
 
         // Public ingress
-        const ingresses = configs.flatMap(it => it.ports)
+        const publicPorts = configs.flatMap(it => it.ports)
             .filter(port => port.ingress !== undefined && !port.ingress?.auth)
-            .map(port => port.ingress)
-            .sort((a, b) => b!.subdomain.length + b!.path.length - (a!.subdomain.length + a!.path.length));
+            .sort((a, b) => b.ingress!.subdomain.length + b.ingress!.path.length - (a.ingress!.subdomain.length + a.ingress!.path.length));
 
         resources.pushAndGet(createIngress({
             name: this.name("public-ingress"),
             namespace: this.config.namespace,
-            rules: ingresses.map(ingress => ({
-                host: this.getHost(ingress?.subdomain || ""),
-                port: KubernetesServerComponent.PORT,
-                path: ingress?.path || "/",
+            rules: publicPorts.map(port => ({
+                host: this.getHost(port.ingress?.subdomain || ""),
+                port: port.number,
+                protocol: port.protocol,
+                path: port.ingress?.path || "/",
                 service: service // ?
             }))
         }));

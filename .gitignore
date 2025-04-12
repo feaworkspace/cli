@@ -4,3 +4,4 @@ packages/*/dist
 packages/*/types
 Dockerfile.*bak*
 serviceAccountKey.json
+.env

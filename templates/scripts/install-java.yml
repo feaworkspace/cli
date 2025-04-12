@@ -1,7 +1,0 @@
-version: 1
-title: Install Java
-args:
-  version: "17"
-script: |
-  sudo apt-get update
-  sudo apt-get install -y openjdk-{{ args.version }}-jdk

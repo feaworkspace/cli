@@ -5,7 +5,6 @@ import { fromError } from 'zod-validation-error';
 import KubernetesWorkspace from './kubernetes/workspace/KubernetesWorkspace';
 import * as yaml from 'yaml';
 import * as dotenv from 'dotenv';
-import { lib } from "lib";
 import KubernetesClient from "./kubernetes/KubernetesClient";
 import {dataValuesFromBase64} from "./kubernetes/utils/encoding";
 
@@ -15,13 +14,6 @@ CLI Parameters:
  */
 
 dotenv.config();
-
-const isDev = process.env['NODE_ENV'] === 'development';
-if(isDev) {
-    process.chdir("../../");
-}
-
-console.log(lib());
 
 (async () => {
     try {

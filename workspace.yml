@@ -16,12 +16,12 @@ workspace:
       branch: main
   gitPrivateKey: "test"
   init:
-    - include: "./templates/scripts/install-java.yml"
+    - include: "../templates/scripts/install-java.yml"
     # - include: "@install-java.yml"
       with:
         args.version: "17"
     # - include: "@install-bun.yml"
-    - include: "./templates/scripts/install-bun.yml"
+    - include: "../templates/scripts/install-bun.yml"
   ports:
     - name: web
       number: 8080
@@ -37,7 +37,7 @@ workspace:
   # env:
   #     ...
 components:
-  - include: "./templates/components/mongo.yml"
+  - include: "../templates/components/mongo.yml"
   # - include: "@mongo.yml"
     with:
       mongo.volumes.mongo-data.size: 10Gi

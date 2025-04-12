@@ -20,8 +20,8 @@ export default class WorkspaceConfigRenderer {
         this.ymlConfig = this.renderYaml(this.ymlConfig);
         this.ymlConfig = workspaceSchema.parse(this.ymlConfig);
 
-        await this.renderIncludes(this.ymlConfig.workspace.init, workspaceScriptSchema, "https://raw.githubusercontent.com/Feavy/workspace/refs/heads/main/templates/components/");
-        await this.renderIncludes(this.ymlConfig.components, workspaceComponentSchema, "https://raw.githubusercontent.com/Feavy/workspace/refs/heads/main/templates/scripts/");
+        await this.renderIncludes(this.ymlConfig.workspace.init, workspaceScriptSchema, "https://raw.githubusercontent.com/feaworkspace/templates/refs/heads/main/components/");
+        await this.renderIncludes(this.ymlConfig.components, workspaceComponentSchema, "https://raw.githubusercontent.com/feaworkspace/templates/refs/heads/main/scripts/");
 
         this.ymlConfig = this.renderYaml(this.ymlConfig);
 

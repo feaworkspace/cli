@@ -6,6 +6,7 @@ export default class KubernetesWorkspaceComponent extends KubernetesComponent {
     public constructor(mainConfig: WorkspaceConfig, config: WorkspaceWorkspaceConfig) {
         super(mainConfig, merge(config, {
             namespace: mainConfig.namespace,
+            args: ["/workspace", "--hostname=0.0.0.0", "--port=28544"],
             env: {},
             volumes: [],
             ports: [

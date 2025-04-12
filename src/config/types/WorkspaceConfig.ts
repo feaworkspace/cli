@@ -50,6 +50,8 @@ export interface WorkspaceComponentConfig {
   name: string;
   image: string;
   tag: string;
+  command?: string[];
+  args?: string[];
   ports: Array<WorkspacePortConfig>;
   env: Record<string, string>;
   secrets: Record<string, string>;
@@ -98,7 +100,7 @@ export interface WorkspaceServerConfig {
 }
 
 export const workspaceServerSchema = z.object({
-  name: z.string().default('ws-portal'),
+  name: z.string().default('gateway'),
   image: z.string().default(Settings.server.image),
   tag: z.string().default(Settings.server.tag),
   users: z.array(z.string()),
@@ -133,8 +135,8 @@ export interface WorkspaceWorkspaceConfig {
 
 export const workspaceWorkspaceSchema = z.object({
   name: z.string().default('workspace'),
-  image: z.string().default(Settings.workspace.image),
-  tag: z.string().default(Settings.workspace.tag),
+  image: z.string().default(Settings.theia.image),
+  tag: z.string().default(Settings.theia.tag),
   gitPrivateKey: z.string().optional(),
   repositories: z.array(workspaceRepositorySchema).default([]),
   init: z.array(z.union([workspaceScriptSchema, workspaceIncludeSchema])).default([]),

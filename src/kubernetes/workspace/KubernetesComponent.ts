@@ -40,6 +40,8 @@ export default class KubernetesComponent {
         return {
             name: this.name(),
             image: this.config.image + ":" + this.config.tag,
+            command: this.config.command,
+            args: this.config.args,
             configMap: this.configMap,
             secret: this.secret,
             ports: this.config.ports.map(port => ({

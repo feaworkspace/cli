@@ -5,15 +5,10 @@ import { WorkspaceComponentConfig, WorkspaceConfig } from "../../config/types/Wo
 import KubernetesWorkspaceComponent from "./KubernetesWorkspaceComponent";
 import KubernetesServerComponent from "./KubernetesServerComponent";
 import { formatName } from "../utils/encoding";
+import KubernetesOctServerComponent from "./KubernetesOctServerComponent";
 
 export default class KubernetesWorkspace {
-    // private k8sApi: k8s.CoreV1Api;
-
     public constructor(private readonly config: WorkspaceConfig) {
-        // const kc = new k8s.KubeConfig();
-        // kc.loadFromDefault();
-
-        // this.k8sApi = kc.makeApiClient(k8s.CoreV1Api);
     }
 
 
@@ -55,6 +50,7 @@ export default class KubernetesWorkspace {
         const serverComponent = new KubernetesServerComponent(this.config, this.config.server, [workspaceComponent.config, ...this.config.components] as WorkspaceComponentConfig[]);
         const kubernetesComponents = [
             ...this.config.components.map(componentConfig => new KubernetesComponent(this.config, componentConfig as WorkspaceComponentConfig)),
+            new KubernetesOctServerComponent(this.config),
             workspaceComponent,
             serverComponent,
         ];

@@ -1,10 +1,14 @@
 {
     "server": {
-        "image": "ghcr.io/feavy/workspace/server",
-        "tag": "main-2006fc3"
+        "image": "ghcr.io/feaworkspace/gateway",
+        "tag": "main-cba915e"
     },
-    "workspace": {
-        "image": "ghcr.io/feavy/workspace/theia",
-        "tag": "main-5709cd5"
+    "theia": {
+        "image": "ghcr.io/feaworkspace/theia-ide",
+        "tag": "master-2079c19"
+    },
+    "octServer": {
+        "image": "ghcr.io/feaworkspace/oct-server",
+        "tag": "release-0-2-0-ecff0fc"
     }
 }

@@ -7,13 +7,8 @@ export interface ContainerDefinition {
   secret?: V1Secret;
   ports?: PortDefinition[];
   volumeMounts?: Array<VolumeMountsDefinition>;
-  // volumes?: Array<{
-  //   name: string,
-  //   accessModes: string[],
-  //   storageClassName: string,
-  //   size: string
-  //   mountPath: string;
-  // }>;
+  command?: string[];
+  args?: string[];
 }
 
 export interface VolumeMountsDefinition {
@@ -76,6 +71,8 @@ export default function createDeployment(definition: DeploymentDefinition): V1De
           containers: definition.containers.map(container => ({
               name: container.name,
               image: container.image,
+              command: container.command,
+              args: container.args,
               ports: container.ports && container.ports.map(port => ({
                 containerPort: port.number,
                 name: port.name,

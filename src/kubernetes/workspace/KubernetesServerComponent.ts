@@ -31,7 +31,7 @@ export default class KubernetesServerComponent extends KubernetesComponent {
             },
             ports: [
                 {
-                    name: "ws-portal",
+                    name: "gateway",
                     protocol: "TCP",
                     number: KubernetesServerComponent.PORT,
                     ingress: {

@@ -20,8 +20,8 @@ export default class WorkspaceConfigRenderer {
         this.ymlConfig = this.renderYaml(this.ymlConfig);
         this.ymlConfig = workspaceSchema.parse(this.ymlConfig);
 
-        await this.renderIncludes(this.ymlConfig.workspace.init, workspaceScriptSchema, "https://raw.githubusercontent.com/feaworkspace/templates/refs/heads/main/components/");
-        await this.renderIncludes(this.ymlConfig.components, workspaceComponentSchema, "https://raw.githubusercontent.com/feaworkspace/templates/refs/heads/main/scripts/");
+        await this.renderIncludes(this.ymlConfig.workspace.init, workspaceScriptSchema, this.ymlConfig.registryURL + "/components/");
+        await this.renderIncludes(this.ymlConfig.components, workspaceComponentSchema, this.ymlConfig.registryURL + "/scripts/");
 
         this.ymlConfig = this.renderYaml(this.ymlConfig);
 

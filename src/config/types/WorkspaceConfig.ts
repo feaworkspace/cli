@@ -156,6 +156,7 @@ export interface WorkspaceConfig {
   name: string;
   namespace: string;
   domain: string;
+  registryURL: string;
   nodeSelector: Record<string, string>;
   pvc: WorkspacePVCConfig;
   gateway: WorkspaceGatewayConfig;
@@ -167,6 +168,7 @@ export const workspaceSchema = z.object({
   name: z.string(),
   namespace: z.string(),
   domain: z.string(),
+  registryURL: z.string().default('https://raw.githubusercontent.com/feaworkspace/templates/refs/heads/main'),
   nodeSelector: z.record(z.string()).default({}),
   pvc: workspacePVCSchema,
   gateway: workspaceGatewaySchema,

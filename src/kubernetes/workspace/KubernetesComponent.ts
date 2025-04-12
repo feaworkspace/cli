@@ -60,4 +60,12 @@ export default class KubernetesComponent {
     public getResources(definedResources: Array<K8sObject>): Array<K8sObject> {
         return [this.configMap, this.secret].filter(Boolean) as Array<K8sObject>;
     }
+
+    public getHost(subdomain?: string) {
+        let domain = this.mainConfig.server.domain.replace("%s", subdomain || "");
+        if (!subdomain) {
+            domain = domain.substring(1); // remove separator
+        }
+        return domain;
+    }
 }

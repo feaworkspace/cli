@@ -1,24 +1,31 @@
 import KubernetesComponent from "./KubernetesComponent";
 import { WorkspaceConfig } from "../../config/types/WorkspaceConfig";
 import Settings from "../../Settings.json";
+import { generateToken } from "../../utils/CryptoUtils";
 
 export default class KubernetesOctServerComponent extends KubernetesComponent {
+    public static readonly NAME = "oct-server"; // move to config
+    public static readonly PORT = 28545;
+    public static readonly OCT_JWT_PRIVATE_KEY = generateToken();
+
     public constructor(mainConfig: WorkspaceConfig) {
         super(mainConfig, {
             image: Settings.octServer.image,
             tag: Settings.octServer.tag,
-            name: "oct-server",
-            args: ["npm", "run", "start", "--workspace=open-collaboration-server", "--", "--port=28545"],
+            name: KubernetesOctServerComponent.NAME,
+            args: ["npm", "run", "start", "--workspace=open-collaboration-server", "--", "--port="+KubernetesOctServerComponent.PORT],
+            secrets: {
+                "OCT_JWT_PRIVATE_KEY": KubernetesOctServerComponent.OCT_JWT_PRIVATE_KEY,
+            },
             env: {},
-            secrets: {},
             volumes: [],
             ports: [
                 {
-                    name: "oct-server",
+                    name: KubernetesOctServerComponent.NAME,
                     protocol: "TCP",
-                    number: 28545,
+                    number: KubernetesOctServerComponent.PORT,
                     ingress: {
-                        subdomain: "oct",
+                        subdomain: KubernetesOctServerComponent.NAME,
                         path: "/",
                         auth: false
                     }

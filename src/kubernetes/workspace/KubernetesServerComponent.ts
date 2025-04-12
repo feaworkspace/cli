@@ -1,21 +1,19 @@
-import K8sObject from "../types/K8sObject";
 import KubernetesComponent from "./KubernetesComponent";
-import { V1Deployment, V1Service } from "@kubernetes/client-node";
-import { createIngress, createService } from "../utils";
 import { WorkspaceComponentConfig, WorkspaceConfig, WorkspaceServerConfig } from "../../config/types/WorkspaceConfig";
 import { merge } from "../../utils/ObjectUtils";
-import { PortDefinition } from "../utils/createDeployment";
+import KubernetesOctServerComponent from "./KubernetesOctServerComponent";
 
 export default class KubernetesServerComponent extends KubernetesComponent {
     public static readonly PORT = 28543;
 
-    public constructor(mainConfig: WorkspaceConfig, private serverConfig: WorkspaceServerConfig, private componentsConfig: Array<WorkspaceComponentConfig>) {
+    public constructor(mainConfig: WorkspaceConfig, private serverConfig: WorkspaceServerConfig, componentsConfig: Array<WorkspaceComponentConfig>) {
         super(mainConfig, serverConfig as any);
         
         this.config = merge(serverConfig, {
             namespace: mainConfig.namespace,
             secrets: {
-                "FIREBASE_SERVICE_ACCOUNT_KEY": serverConfig.firebaseServiceAccountKey
+                "FIREBASE_SERVICE_ACCOUNT_KEY": serverConfig.firebaseServiceAccountKey,
+                "OCT_JWT_PRIVATE_KEY": KubernetesOctServerComponent.OCT_JWT_PRIVATE_KEY,
             },
             env: {
                 "ROUTES": JSON.stringify(componentsConfig.flatMap(it => it.ports).filter(port => port.ingress !== undefined).map(port => ({
@@ -26,6 +24,7 @@ export default class KubernetesServerComponent extends KubernetesComponent {
                 }))),
                 "ALLOWED_USERS": JSON.stringify(serverConfig.users),
                 "HOSTNAME": this.getHost(this.serverConfig.name),
+                "OCT_SERVER_URL": "https://" + this.getHost(KubernetesOctServerComponent.NAME),
                 "TOKEN_NAME": this.name("token"),
                 "WORKSPACE_NAME": mainConfig.name
             },
@@ -43,13 +42,5 @@ export default class KubernetesServerComponent extends KubernetesComponent {
             ],
             volumes: []
         });
-    }
-
-    private getHost(subdomain?: string) {
-        let domain = this.serverConfig.domain.replace("%s", subdomain || "");
-        if (!subdomain) {
-            domain = domain.substring(1); // remove separator
-        }
-        return domain;
     }
 }

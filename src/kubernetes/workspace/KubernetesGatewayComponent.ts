@@ -1,18 +1,18 @@
 import KubernetesComponent from "./KubernetesComponent";
-import { WorkspaceComponentConfig, WorkspaceConfig, WorkspaceServerConfig } from "../../config/types/WorkspaceConfig";
+import { WorkspaceComponentConfig, WorkspaceConfig, WorkspaceGatewayConfig } from "../../config/types/WorkspaceConfig";
 import { merge } from "../../utils/ObjectUtils";
 import KubernetesOctServerComponent from "./KubernetesOctServerComponent";
 
-export default class KubernetesServerComponent extends KubernetesComponent {
+export default class KubernetesGatewayComponent extends KubernetesComponent {
     public static readonly PORT = 28543;
 
-    public constructor(mainConfig: WorkspaceConfig, private serverConfig: WorkspaceServerConfig, componentsConfig: Array<WorkspaceComponentConfig>) {
-        super(mainConfig, serverConfig as any);
+    public constructor(mainConfig: WorkspaceConfig, private gatewayConfig: WorkspaceGatewayConfig, componentsConfig: Array<WorkspaceComponentConfig>) {
+        super(mainConfig, gatewayConfig as any);
         
-        this.config = merge(serverConfig, {
+        this.config = merge(gatewayConfig, {
             namespace: mainConfig.namespace,
             secrets: {
-                "FIREBASE_SERVICE_ACCOUNT_KEY": serverConfig.firebaseServiceAccountKey,
+                "FIREBASE_SERVICE_ACCOUNT_KEY": gatewayConfig.firebaseServiceAccountKey,
                 "OCT_JWT_PRIVATE_KEY": KubernetesOctServerComponent.OCT_JWT_PRIVATE_KEY,
             },
             env: {
@@ -22,8 +22,7 @@ export default class KubernetesServerComponent extends KubernetesComponent {
                     auth: port.ingress?.auth || true,
                     targetPort: port.number
                 }))),
-                "ALLOWED_USERS": JSON.stringify(serverConfig.users),
-                "HOSTNAME": this.getHost(this.serverConfig.name),
+                "HOSTNAME": this.getHost(this.gatewayConfig.name),
                 "OCT_SERVER_URL": "https://" + this.getHost(KubernetesOctServerComponent.NAME),
                 "TOKEN_NAME": this.name("token"),
                 "WORKSPACE_NAME": mainConfig.name
@@ -32,9 +31,9 @@ export default class KubernetesServerComponent extends KubernetesComponent {
                 {
                     name: "gateway",
                     protocol: "TCP",
-                    number: KubernetesServerComponent.PORT,
+                    number: KubernetesGatewayComponent.PORT,
                     ingress: {
-                        subdomain: this.serverConfig.name,
+                        subdomain: this.gatewayConfig.name,
                         path: "/",
                         auth: true
                     }

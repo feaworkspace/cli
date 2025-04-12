@@ -1,14 +1,13 @@
 # version: 1
 name: "ppbo"
 namespace: "ppbo"
+domain: "%s-ppbo.feavy.world"
 nodeSelector:
   kubernetes.io/arch: "amd64"
 pvc:
   storageClassName: "openebs-hostpath"
   size: "10Gi"
-server:
-  domain: "%s-ppbo.feavy.world"
-  users: "{{ parseYaml(env.ALLOWED_USERS) }}"
+gateway:
   firebaseServiceAccountKey: "{{ readFile('serviceAccountKey.json') }}"
 workspace:
   repositories:

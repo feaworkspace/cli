@@ -10,8 +10,8 @@ export default class KubernetesOctServerComponent extends KubernetesComponent {
 
     public constructor(mainConfig: WorkspaceConfig) {
         super(mainConfig, {
-            image: Settings.octServer.image,
-            tag: Settings.octServer.tag,
+            image: Settings["oct-server"].image,
+            tag: Settings["oct-server"].tag,
             name: KubernetesOctServerComponent.NAME,
             args: ["npm", "run", "start", "--workspace=open-collaboration-server", "--", "--port="+KubernetesOctServerComponent.PORT],
             secrets: {

@@ -3,7 +3,7 @@ import K8sObject from "../types/K8sObject";
 import { createConfigMap, createDeployment, createIngress, createNamespace, createPersistentVolumeClaim, createService, createServiceAccount } from "../utils";
 import { WorkspaceComponentConfig, WorkspaceConfig } from "../../config/types/WorkspaceConfig";
 import KubernetesWorkspaceComponent from "./KubernetesWorkspaceComponent";
-import KubernetesServerComponent from "./KubernetesServerComponent";
+import KubernetesGatewayComponent from "./KubernetesGatewayComponent";
 import { formatName } from "../utils/encoding";
 import KubernetesOctServerComponent from "./KubernetesOctServerComponent";
 
@@ -47,12 +47,12 @@ export default class KubernetesWorkspace {
         }));
 
         const workspaceComponent = new KubernetesWorkspaceComponent(this.config, this.config.workspace);
-        const serverComponent = new KubernetesServerComponent(this.config, this.config.server, [workspaceComponent.config, ...this.config.components] as WorkspaceComponentConfig[]);
+        const gatewayComponent = new KubernetesGatewayComponent(this.config, this.config.gateway, [workspaceComponent.config, ...this.config.components] as WorkspaceComponentConfig[]);
         const kubernetesComponents = [
             ...this.config.components.map(componentConfig => new KubernetesComponent(this.config, componentConfig as WorkspaceComponentConfig)),
             new KubernetesOctServerComponent(this.config),
             workspaceComponent,
-            serverComponent,
+            gatewayComponent,
         ];
 
         const configs = kubernetesComponents.flatMap(component => component.config);
@@ -82,7 +82,7 @@ export default class KubernetesWorkspace {
 
         // ports exposed as clusterip service
         // ports of server + ports of components which have ingress and auth = false
-        const ports = [...serverComponent.ports,
+        const ports = [...gatewayComponent.ports,
         ...configs.flatMap(it => (it as WorkspaceComponentConfig).ports)
             .filter(port => port.ingress !== undefined && !port.ingress?.auth)
         ];
@@ -110,7 +110,7 @@ export default class KubernetesWorkspace {
             namespace: this.config.namespace,
             rules: uniqueBy(authIngresses, it => this.getHost(it.subdomain)).map(ingress => ({
                 host: this.getHost(ingress.subdomain),
-                port: KubernetesServerComponent.PORT,
+                port: KubernetesGatewayComponent.PORT,
                 path: "/",
                 service: service // ?
             }))
@@ -153,7 +153,7 @@ export default class KubernetesWorkspace {
     }
 
     private getHost(subdomain?: string) {
-        let domain = this.config.server.domain.replace("%s", subdomain || "");
+        let domain = this.config.domain.replace("%s", subdomain || "");
         if (!subdomain) {
             domain = domain.substring(1); // remove separator
         }

@@ -62,7 +62,7 @@ export default class KubernetesComponent {
     }
 
     public getHost(subdomain?: string) {
-        let domain = this.mainConfig.server.domain.replace("%s", subdomain || "");
+        let domain = this.mainConfig.domain.replace("%s", subdomain || "");
         if (!subdomain) {
             domain = domain.substring(1); // remove separator
         }

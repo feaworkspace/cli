@@ -90,21 +90,17 @@ export const workspaceRepositorySchema = z.object({
   branch: z.string().optional(),
 });
 
-export interface WorkspaceServerConfig {
+export interface WorkspaceGatewayConfig {
   name: string;
   image: string;
   tag: string;
-  users: string[];
-  domain: string;
   firebaseServiceAccountKey: string;
 }
 
-export const workspaceServerSchema = z.object({
+export const workspaceGatewaySchema = z.object({
   name: z.string().default('gateway'),
-  image: z.string().default(Settings.server.image),
-  tag: z.string().default(Settings.server.tag),
-  users: z.array(z.string()),
-  domain: z.string(),
+  image: z.string().default(Settings.gateway.image),
+  tag: z.string().default(Settings.gateway.tag),
   firebaseServiceAccountKey: z.string(),
 });
 
@@ -159,9 +155,10 @@ export const workspacePVCSchema = z.object({
 export interface WorkspaceConfig {
   name: string;
   namespace: string;
+  domain: string;
   nodeSelector: Record<string, string>;
   pvc: WorkspacePVCConfig;
-  server: WorkspaceServerConfig;
+  gateway: WorkspaceGatewayConfig;
   workspace: WorkspaceWorkspaceConfig;
   components: Array<WorkspaceComponentConfig | WorkspaceIncludeConfig>;
 }
@@ -169,9 +166,10 @@ export interface WorkspaceConfig {
 export const workspaceSchema = z.object({
   name: z.string(),
   namespace: z.string(),
+  domain: z.string(),
   nodeSelector: z.record(z.string()).default({}),
   pvc: workspacePVCSchema,
-  server: workspaceServerSchema,
+  gateway: workspaceGatewaySchema,
   workspace: workspaceWorkspaceSchema,
   components: z.array(z.union([workspaceComponentSchema, workspaceIncludeSchema])).default([]),
 });

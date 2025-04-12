@@ -1,5 +1,5 @@
 {
-    "server": {
+    "gateway": {
         "image": "ghcr.io/feaworkspace/gateway",
         "tag": "main-cba915e"
     },
@@ -7,7 +7,7 @@
         "image": "ghcr.io/feaworkspace/theia-ide",
         "tag": "master-2079c19"
     },
-    "octServer": {
+    "oct-server": {
         "image": "ghcr.io/feaworkspace/oct-server",
         "tag": "release-0-2-0-ecff0fc"
     }

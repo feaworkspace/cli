@@ -2,8 +2,10 @@ import KubernetesComponent from "./KubernetesComponent";
 import { WorkspaceComponentConfig, WorkspaceConfig, WorkspaceGatewayConfig } from "../../config/types/WorkspaceConfig";
 import { merge } from "../../utils/ObjectUtils";
 import KubernetesOctServerComponent from "./KubernetesOctServerComponent";
+import KubernetesWorkspaceComponent from "./KubernetesWorkspaceComponent";
 
 export default class KubernetesGatewayComponent extends KubernetesComponent {
+    public static readonly NAME = "gateway";
     public static readonly PORT = 28543;
 
     public constructor(mainConfig: WorkspaceConfig, private gatewayConfig: WorkspaceGatewayConfig, componentsConfig: Array<WorkspaceComponentConfig>) {
@@ -23,7 +25,8 @@ export default class KubernetesGatewayComponent extends KubernetesComponent {
                     targetPort: port.number
                 }))),
                 "HOSTNAME": this.getHost(this.gatewayConfig.name),
-                "OCT_SERVER_URL": "https://" + this.getHost(KubernetesOctServerComponent.NAME),
+                "THEIA_HOSTNAME": this.getHost(KubernetesWorkspaceComponent.NAME),
+                "OCT_SERVER_URL": "http://127.0.0.1:" + KubernetesOctServerComponent.PORT,
                 "TOKEN_NAME": this.name("token"),
                 "WORKSPACE_NAME": mainConfig.name
             },

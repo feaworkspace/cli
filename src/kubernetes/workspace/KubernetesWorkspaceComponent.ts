@@ -15,7 +15,12 @@ export default class KubernetesWorkspaceComponent extends KubernetesComponent {
                 "COLLABORATION_SERVER_URL": "https://" + this.getHost("oct-server"),
                 "WORKSPACE_SERVER_URL": "https://" + this.getHost(this.mainConfig.gateway.name)
             },
-            volumes: [],
+            volumes: [
+                {
+                    name: "workspace",
+                    mountPath: "/workspace"
+                }
+            ],
             ports: [
                 {
                     name: KubernetesWorkspaceComponent.NAME,

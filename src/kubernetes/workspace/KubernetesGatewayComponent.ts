@@ -42,7 +42,12 @@ export default class KubernetesGatewayComponent extends KubernetesComponent {
                     }
                 }
             ],
-            volumes: []
+            volumes: [
+                {
+                    name: "workspace",
+                    mountPath: "/workspace"
+                }
+            ]
         });
     }
 }

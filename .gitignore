@@ -5,3 +5,5 @@ packages/*/types
 Dockerfile.*bak*
 serviceAccountKey.json
 .env
+key
+key.pub

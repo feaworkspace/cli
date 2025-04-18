@@ -79,14 +79,14 @@ export const workspaceIncludeSchema = z.object({
 });
 
 export interface RepositoryConfig {
-  remote: string;
-  name?: string;
+  url: string;
+  path?: string;
   branch?: string;
 }
 
 export const workspaceRepositorySchema = z.object({
-  remote: z.string(),
-  name: z.string().optional(),
+  url: z.string(),
+  path: z.string().optional(),
   branch: z.string().optional(),
 });
 
@@ -120,7 +120,7 @@ export interface WorkspaceWorkspaceConfig {
   name: string;
   image: string;
   tag: string;
-  gitPrivateKey?: string;
+  sshPrivateKey?: string;
   repositories: Array<RepositoryConfig>;
   init: Array<WorkspaceScriptConfig | WorkspaceIncludeConfig>;
   ports: Array<WorkspacePortConfig>;
@@ -133,7 +133,7 @@ export const workspaceWorkspaceSchema = z.object({
   name: z.string().default('workspace'),
   image: z.string().default(Settings.theia.image),
   tag: z.string().default(Settings.theia.tag),
-  gitPrivateKey: z.string().optional(),
+  sshPrivateKey: z.string().optional(),
   repositories: z.array(workspaceRepositorySchema).default([]),
   init: z.array(z.union([workspaceScriptSchema, workspaceIncludeSchema])).default([]),
   ports: z.array(workspacePortSchema).default([]),

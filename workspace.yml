@@ -11,9 +11,8 @@ gateway:
   firebaseServiceAccountKey: "{{ readFile('serviceAccountKey.json') }}"
 workspace:
   repositories:
-    - remote: https://github.com/feavy/ppbo.git
-      branch: main
-  gitPrivateKey: "test"
+    - url: git@github.com:Feavy/ppbo.git
+  sshPrivateKey: "{{ readFile('key') }}"
   init:
     - include: "../templates/scripts/install-java.yml"
     # - include: "@install-java.yml"

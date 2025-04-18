@@ -122,7 +122,7 @@ export interface WorkspaceWorkspaceConfig {
   tag: string;
   sshPrivateKey?: string;
   repositories: Array<RepositoryConfig>;
-  init: Array<WorkspaceScriptConfig | WorkspaceIncludeConfig>;
+  initScripts: Array<WorkspaceScriptConfig | WorkspaceIncludeConfig>;
   ports: Array<WorkspacePortConfig>;
   env: Record<string, string>;
   secrets: Record<string, string>;
@@ -135,7 +135,7 @@ export const workspaceWorkspaceSchema = z.object({
   tag: z.string().default(Settings.theia.tag),
   sshPrivateKey: z.string().optional(),
   repositories: z.array(workspaceRepositorySchema).default([]),
-  init: z.array(z.union([workspaceScriptSchema, workspaceIncludeSchema])).default([]),
+  initScripts: z.array(z.union([workspaceScriptSchema, workspaceIncludeSchema])).default([]),
   ports: z.array(workspacePortSchema).default([]),
   env: z.record(z.string()).default({}),
   secrets: z.record(z.string()).default({}),

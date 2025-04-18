@@ -40,12 +40,20 @@ if [ -n "$GIT_REPOSITORIES" ] ; then
             git clone $repo_url $repo_path
         fi
     done
-    # for repo in "$GIT_REPOSITORIES" ; do
-    #     if [ -n "$dir" && ! -f "$dir" ] ; then
-    #         mkdir -p "$dir"
-    #     fi
-    #     git clone $repo
-    # done
+fi
+
+# Play init scripts
+if [ -n "$INIT_SCRIPTS" ] ; then
+    INIT_SCRIPTS=$(echo "$INIT_SCRIPTS" | jq -c '.[]')
+
+    for initScript in "$INIT_SCRIPTS"; do
+        title=$(echo "$initScript" | jq -r -c '.title')
+        script=$(echo "$initScript" | jq -r -c '.script')
+
+        echo "$title"
+        
+        bash -c "$script"
+     done
 fi
 
 node /home/theia/applications/browser/lib/backend/main.js /workspace --hostname=0.0.0.0 --port=28544
@@ -53,7 +61,8 @@ node /home/theia/applications/browser/lib/backend/main.js /workspace --hostname=
             env: {
                 "COLLABORATION_SERVER_URL": "https://" + this.getHost("oct-server"),
                 "WORKSPACE_SERVER_URL": "https://" + this.getHost(this.mainConfig.gateway.name),
-                "GIT_REPOSITORIES": JSON.stringify(config.repositories || [])
+                "GIT_REPOSITORIES": JSON.stringify(config.repositories || []),
+                "INIT_SCRIPTS": JSON.stringify(config.initScripts || [])
             },
             secrets: {
                 "SSH_PRIVATE_KEY": config.sshPrivateKey ?? ""

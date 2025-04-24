@@ -65,7 +65,9 @@ node /home/theia/applications/browser/lib/backend/main.js /workspace --hostname=
                 "COLLABORATION_SERVER_URL": "https://" + this.getHost("oct-server"),
                 "WORKSPACE_SERVER_URL": "https://" + this.getHost(this.mainConfig.gateway.name),
                 "GIT_REPOSITORIES": JSON.stringify(config.repositories || []),
-                "INIT_SCRIPTS": JSON.stringify(config.initScripts || [])
+                "INIT_SCRIPTS": JSON.stringify(config.initScripts || []),
+                "THEIA_MINI_BROWSER_HOST_PATTERN": "{{hostname}}",
+                "THEIA_WEBVIEW_EXTERNAL_ENDPOINT": "{{hostname}}"
             },
             secrets: {
                 "SSH_PRIVATE_KEY": config.sshPrivateKey ?? ""

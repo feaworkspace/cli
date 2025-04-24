@@ -56,6 +56,9 @@ if [ -n "$INIT_SCRIPTS" ] ; then
      done
 fi
 
+# Create theia config dir
+mkdir /workspace/.theia
+
 node /home/theia/applications/browser/lib/backend/main.js /workspace --hostname=0.0.0.0 --port=28544
             `],
             env: {

@@ -46,6 +46,16 @@ export const workspaceVolumeSchema = z.object({
   mountPath: z.string(),
 });
 
+export interface WorkspaceFileConfig {
+  mountPath: string;
+  content: string;
+}
+
+export const workspaceFileSchema = z.object({
+  mountPath: z.string(),
+  content: z.string()
+});
+
 export interface WorkspaceComponentConfig {
   name: string;
   image: string;
@@ -55,6 +65,7 @@ export interface WorkspaceComponentConfig {
   ports: Array<WorkspacePortConfig>;
   env: Record<string, string>;
   secrets: Record<string, string>;
+  files: Record<string, WorkspaceFileConfig>;
   volumes: Array<WorkspaceVolumeConfig>;
 }
 
@@ -65,6 +76,7 @@ export const workspaceComponentSchema = z.object({
   ports: z.array(workspacePortSchema).default([]),
   env: z.record(z.string()).default({}),
   secrets: z.record(z.string()).default({}),
+  files: z.record(workspaceFileSchema).default({}),
   volumes: z.array(workspaceVolumeSchema).default([]),
 });
 

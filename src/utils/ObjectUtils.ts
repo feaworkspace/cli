@@ -116,3 +116,11 @@ export function merge(target: any, source: any) {
     }
     return target;
 }
+
+export function isEmpty(obj: object) {
+    return !obj || Object.keys(obj).length === 0;
+}
+
+export function isNotEmpty(obj: object) {
+    return !isEmpty(obj);
+}

@@ -1,14 +1,14 @@
 {
     "gateway": {
         "image": "ghcr.io/feaworkspace/gateway",
-        "tag": "main-38f557e"
+        "tag": "main-19fc5a7"
     },
     "theia": {
         "image": "ghcr.io/feaworkspace/theia-ide",
-        "tag": "master-e263fd4"
+        "tag": "master-d73239c"
     },
     "oct-server": {
         "image": "ghcr.io/feaworkspace/oct-server",
-        "tag": "release-0-2-0-ecff0fc"
+        "tag": "release-0-2-0-4d7efca"
     }
 }

@@ -18,6 +18,7 @@ export default class KubernetesOctServerComponent extends KubernetesComponent {
                 "OCT_JWT_PRIVATE_KEY": KubernetesOctServerComponent.OCT_JWT_PRIVATE_KEY,
             },
             env: {},
+            files: {},
             volumes: [],
             ports: [
                 {
